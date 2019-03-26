@@ -1,7 +1,7 @@
 import CodeGenerator.CodeParser;
 import GUI.CreateGUI;
 
-public class Main {
+public class Start {
 
     public static void main(String[] args) {
         if (args.length > 0) {
