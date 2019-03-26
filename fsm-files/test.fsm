@@ -3,7 +3,7 @@ trans
 A A 'a' testmethod
 A B 'b' testmethod2
 CODE
-def testmethod:
+def testmethod():
 	print("Method one")
-def testmethod2:
+def testmethod2():
 	print("test method 2")

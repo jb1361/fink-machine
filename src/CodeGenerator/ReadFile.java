@@ -16,18 +16,10 @@ class ReadFile {
             String line;
             line = br.readLine();
             if(line != null) {
-                if (line.equals("FSM")) {
-                    ReadFSMSection(br);
-                } else if (line.equals("CODE")) {
-                    ReadCodeSection(br);
-                }
-                else {
-                    System.out.println("Invalid FSM file");
-                    return;
-                }
+                if (line.equals("FSM")) ReadFSMSection(br);
+                else if (line.equals("CODE")) ReadCodeSection(br);
+                else System.out.println("Invalid FSM file");
             }
-            System.out.print(FsmSectionList);
-            System.out.print(CodeSectionList);
         }
         catch (Exception e) {
             e.printStackTrace();

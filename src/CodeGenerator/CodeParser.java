@@ -12,7 +12,17 @@ public class CodeParser {
         ReadFile fReader = new ReadFile(args[0]);
         System.out.println("Parsing FSM");
         FsmSectionList = fReader.FsmSectionList;
-        CodeSectionList = fReader.FsmSectionList;
-        WriteCode.Write(args[1], FsmSectionList.toString());
+        CodeSectionList = fReader.CodeSectionList;
+        String output = "";
+        output += ParseCodeSection();
+        WriteCode.Write(args[1], output);
+    }
+    private String ParseCodeSection() {
+        StringBuilder output = new StringBuilder();
+        for (String element : CodeSectionList) {
+            output.append(element);
+            output.append("\n");
+        }
+        return output.toString();
     }
 }
