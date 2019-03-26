@@ -40,7 +40,7 @@ class ReadFile {
         }
         catch(Exception e){
                 e.printStackTrace();
-            }
+        }
     }
     private void ReadCodeSection(BufferedReader br) {
         String line;

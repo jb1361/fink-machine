@@ -1,5 +1,9 @@
 FSM
-test
-test3
+trans
+A A 'a' testmethod
+A B 'b' testmethod2
 CODE
-test2
+def testmethod:
+	print("Method one")
+def testmethod2:
+	print("test method 2")
