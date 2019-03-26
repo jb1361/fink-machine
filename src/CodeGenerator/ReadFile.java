@@ -9,6 +9,7 @@ class ReadFile {
     List<String> CodeSectionList = new ArrayList<String>();
 
     ReadFile(String fileName) {
+        System.out.println("Reading File");
         File file = new File(fileName);
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -19,6 +20,10 @@ class ReadFile {
                     ReadFSMSection(br);
                 } else if (line.equals("CODE")) {
                     ReadCodeSection(br);
+                }
+                else {
+                    System.out.println("Invalid FSM file");
+                    return;
                 }
             }
             System.out.print(FsmSectionList);
