@@ -16,7 +16,10 @@ public class CodeParser {
         String output = "";
         output += ParseCodeSection();
         output += ParseFsmSection();
+        System.out.println("Writing output file");
         WriteCode.Write(args[1], output);
+        System.out.println("Done");
+        System.out.println();
     }
     private String ParseFsmSection() {
         StringBuilder output = new StringBuilder();
