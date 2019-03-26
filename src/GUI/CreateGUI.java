@@ -14,7 +14,7 @@ public class StartGUI extends Application {
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
-    public StartGUI(String[] args) {
+    public static void Create(String[] args) {
         launch(args);
     }
 }

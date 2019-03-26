@@ -1,5 +1,5 @@
 import CodeGenerator.CodeParser;
-import GUI.StartGUI;
+import GUI.CreateGUI;
 
 public class Main {
 
@@ -7,7 +7,8 @@ public class Main {
         if (args.length > 0) {
             CodeParser fsm = new CodeParser(args);
         } else {
-            StartGUI gui = new StartGUI(args);
+            // We do not create and object here as JavaFX launch method creates the objects.
+            CreateGUI.Create(args);
         }
     }
 }
