@@ -15,7 +15,46 @@ public class CodeParser {
         CodeSectionList = fReader.CodeSectionList;
         String output = "";
         output += ParseCodeSection();
+        output += ParseFsmSection();
         WriteCode.Write(args[1], output);
+    }
+    private String ParseFsmSection() {
+        StringBuilder output = new StringBuilder();
+        int transitionNode = 0;
+        for (String element : FsmSectionList) {
+            if (!element.equals("trans")) {
+                String[] node = element.split(" ");
+                output.append(CreateTransitionCode(node, transitionNode));
+                transitionNode++;
+            }
+        }
+        output.append("UpdateState()\n");
+        return output.toString();
+    }
+    private String CreateFsmCodeSetup(String startNode, String startCh) {
+        StringBuilder output = new StringBuilder();
+        output.append("state_history = []\n");
+        output.append("state ='" + startNode + "'\n");
+        output.append("ch = " + startCh + "\n");
+        output.append("def UpdateState():\n");
+        output.append("\tglobal state\n" + "\tglobal ch\n");
+        return output.toString();
+    }
+    private String CreateTransitionCode(String[] node, int count) {
+        StringBuilder output = new StringBuilder();
+        if (count == 0) {
+            output.append(CreateFsmCodeSetup(node[0], node[2]));
+            output.append("\tif(state == '" + node[0] +"' and ch == " + node[2] + "):\n");
+            output.append("\t\tstate = '" + node[1] + "'\n");
+            output.append("\t\tstate_history.append(state + ' : ' + ch)\n");
+            output.append("\t\t" + node[3] + "()\n");
+        } else {
+            output.append("\telif(state == '" + node[0] +"' and ch == " + node[2] + "):\n");
+            output.append("\t\tstate = '" + node[1] + "'\n");
+            output.append("\t\tstate_history.append(state + ' : ' + ch)\n");
+            output.append("\t\t" + node[3] + "()\n");
+        }
+        return output.toString();
     }
     private String ParseCodeSection() {
         StringBuilder output = new StringBuilder();
