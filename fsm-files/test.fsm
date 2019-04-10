@@ -1,9 +1,10 @@
 FSM FooBar
+accept A B C
 trans
 A A 'a' testmethod
 A B 'b' testmethod2
 B B 'b' testmethod3
-D E 'f' testmethod3
+A D 'f' testmethod4
 CODE
 def testmethod():	
 	print("Method one")	

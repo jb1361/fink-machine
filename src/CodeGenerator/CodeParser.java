@@ -1,9 +1,8 @@
 package CodeGenerator;
 
-import com.sun.corba.se.spi.orbutil.fsm.FSM;
-
-import javax.naming.CompositeName;
+import com.sun.deploy.util.StringUtils;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CodeParser {
@@ -32,7 +31,14 @@ public class CodeParser {
             if(element.contains("FSM")) {
                 String[] header = element.split(" ");
                 output.append("print('Running Module: " + header[1] + "')\n");
-            }else if (!element.equals("trans")) {
+            }
+            else if (element.contains("accept")) {
+                String[] accept_states = element.split(" ");
+                accept_states = Arrays.copyOfRange(accept_states, 1, accept_states.length);
+                String states = String.join("','", accept_states);
+                output.append("accept_states = ['" + states + "']\n");
+            }
+            else if (!element.equals("trans")) {
                 String[] node = element.split(" ");
                 output.append(CreateTransitionCode(node, transitionNode));
                 transitionNode++;
@@ -69,12 +75,22 @@ public class CodeParser {
     private String CreateStandardInputSection() {
         StringBuilder output = new StringBuilder();
         output.append("print('Waiting for input...')\n");
-        output.append("ch = input()\n");
-        output.append("while(ch):\n");
-        output.append("\tstate_history.append(state + ' : ' + ch)\n");
-        output.append("\tUpdateState()\n");
+        output.append("try:\n");
         output.append("\tch = input()\n");
+        output.append("except:\n");
+        output.append("\tprint('Input File is empty')\n");
+        output.append("while(ch):\n");
+        output.append("\tUpdateState()\n");
 
+        output.append("\tif(state not in accept_states):\n");
+        output.append("\t\tprint(state + ' is not an accepted state. Reverting back to previous state (We can have the FSM stop running here if needed)')\n");
+        output.append("\t\tstate = state_history[-1][0]\n");
+        output.append("\t\tch = state_history[-1][1]\n");
+        output.append("\tstate_history.append([state , ch])\n");
+        output.append("\ttry:\n");
+        output.append("\t\tch = input()\n");
+        output.append("\texcept:\n");
+        output.append("\t\tbreak\n");
         output.append("print('Ending State: ' + state)\n");
         output.append("print('')\n");
         output.append("print('State History')\n");
