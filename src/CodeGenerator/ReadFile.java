@@ -16,7 +16,7 @@ class ReadFile {
             String line;
             line = br.readLine();
             if(line != null) {
-                if (line.equals("FSM")) ReadFSMSection(br);
+                if (line.contains("FSM")) ReadFSMSection(br, line);
                 else if (line.equals("CODE")) ReadCodeSection(br);
                 else System.out.println("Invalid FSM file");
             }
@@ -25,7 +25,8 @@ class ReadFile {
             e.printStackTrace();
         }
     }
-    private void ReadFSMSection(BufferedReader br) {
+    private void ReadFSMSection(BufferedReader br, String title) {
+        FsmSectionList.add(title);
         String line;
         try {
             while ((line = br.readLine()) != null) {
@@ -43,8 +44,8 @@ class ReadFile {
         String line;
         try {
             while ((line = br.readLine()) != null) {
-                if (line.equals("FSM")) {
-                    ReadFSMSection(br);
+                if (line.contains("FSM")) {
+                    ReadFSMSection(br, line);
                     return;
                 } else CodeSectionList.add(line);
             }

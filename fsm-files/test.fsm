@@ -1,17 +1,15 @@
-FSM
+FSM FooBar
 trans
 A A 'a' testmethod
 A B 'b' testmethod2
 B B 'b' testmethod3
+D E 'f' testmethod3
 CODE
-def testmethod():
-	global ch
-	print("State One, transitiong to state 2")
-	ch = 'b'
-	UpdateState()
+def testmethod():	
+	print("State One, transitiong to state 2")	
 def testmethod2():
-	print("State 2, transitioning to state 3")
-	UpdateState()
+	print("State 2, transitioning to state 3")	
 def testmethod3():
-	print("Success! Fsm has worked correctly")	
-	print(state_history)
+	print("Success! Fsm has worked correctly")		
+def testmethod4():
+	print("Success! Fsm has worked correctly")		
