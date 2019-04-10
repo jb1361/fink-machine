@@ -52,6 +52,19 @@ public class CodeParser {
         output.append("state_history = []\n");
         output.append("state ='" + startNode + "'\n");
         output.append("ch = ''\n");
+
+        // Validate the state is an accepted state and revert back if not
+        output.append("def ValidateState():\n");
+        output.append("\tglobal state\n" + "\tglobal ch\n");
+        output.append("\tif(state not in accept_states):\n");
+        output.append("\t\tprint(state + ' is not an accepted state. Reverting back to previous state (We can have the FSM stop running here if needed)')\n");
+        output.append("\t\tstate = state_history[-1][0]\n");
+        output.append("\t\tch = state_history[-1][1]\n");
+        output.append("\t\treturn False\n");
+        output.append("\telse:\n");
+        output.append("\t\treturn True\n");
+
+
         output.append("def UpdateState():\n");
         output.append("\tglobal state\n" + "\tglobal ch\n");
         return output.toString();
@@ -66,10 +79,7 @@ public class CodeParser {
         }
             output.append("\t\tstate = '" + node[1] + "'\n");
             output.append("\t\tprint('Transitioning to state " + node[1] + " from state " + node[0] + " with ch = ' + ch)\n");
-            output.append("\t\tif(state not in accept_states):\n");
-            output.append("\t\t\tprint(state + ' is not an accepted state. Reverting back to previous state (We can have the FSM stop running here if needed)')\n");
-            output.append("\t\t\tstate = state_history[-1][0]\n");
-            output.append("\t\t\tch = state_history[-1][1]\n");
+            output.append("\t\tif(not ValidateState()):\n");
             output.append("\t\t\treturn\n");
             output.append("\t\t" + node[3] + "()\n");
 
