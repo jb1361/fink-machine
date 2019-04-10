@@ -6,10 +6,10 @@ B B 'b' testmethod3
 D E 'f' testmethod3
 CODE
 def testmethod():	
-	print("State One, transitiong to state 2")	
+	print("Method one")	
 def testmethod2():
-	print("State 2, transitioning to state 3")	
+	print("Method two")	
 def testmethod3():
-	print("Success! Fsm has worked correctly")		
+	print("Method three")		
 def testmethod4():
-	print("Success! Fsm has worked correctly")		
+	print("Method four")

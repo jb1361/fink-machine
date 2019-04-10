@@ -40,6 +40,7 @@ public class CodeParser {
         }
         output.append("\telse:\n");
         output.append("\t\tprint('Not a valid transition from state: ' + state)\n");
+        output.append("\t\tprint('We can have the FSM stop running here if needed with import sys and sys.exit()')\n");
         return output.toString();
     }
     private String CreateFsmCodeSetup(String startNode) {
@@ -56,29 +57,28 @@ public class CodeParser {
         if (count == 0) {
             output.append(CreateFsmCodeSetup(node[0]));
             output.append("\tif(state == '" + node[0] +"' and ch == " + node[2] + "):\n");
-            output.append("\t\tstate = '" + node[1] + "'\n");
-            output.append("\t\tstate_history.append(state + ' : ' + ch)\n");
-            output.append("\t\t" + node[3] + "()\n");
         } else {
             output.append("\telif(state == '" + node[0] +"' and ch == " + node[2] + "):\n");
-            output.append("\t\tstate = '" + node[1] + "'\n");
-            output.append("\t\tstate_history.append(state + ' : ' + ch)\n");
-            output.append("\t\t" + node[3] + "()\n");
         }
+            output.append("\t\tstate = '" + node[1] + "'\n");
+            output.append("\t\tprint('Transitioning to state " + node[1] + " from state " + node[0] + " with ch = ' + ch)\n");
+            output.append("\t\t" + node[3] + "()\n");
+
         return output.toString();
     }
     private String CreateStandardInputSection() {
         StringBuilder output = new StringBuilder();
         output.append("print('Waiting for input...')\n");
         output.append("ch = input()\n");
-        //output.append("\tNo input FSM is exiting...\n");
         output.append("while(ch):\n");
+        output.append("\tstate_history.append(state + ' : ' + ch)\n");
         output.append("\tUpdateState()\n");
         output.append("\tch = input()\n");
 
         output.append("print('Ending State: ' + state)\n");
         output.append("print('')\n");
         output.append("print('State History')\n");
+        output.append("print(state_history)\n");
         output.append("print('FSM finished, exiting...')\n");
         return output.toString();
     }
