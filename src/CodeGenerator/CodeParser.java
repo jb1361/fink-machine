@@ -1,7 +1,5 @@
 package CodeGenerator;
 
-import com.sun.deploy.util.StringUtils;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,6 +66,11 @@ public class CodeParser {
         }
             output.append("\t\tstate = '" + node[1] + "'\n");
             output.append("\t\tprint('Transitioning to state " + node[1] + " from state " + node[0] + " with ch = ' + ch)\n");
+            output.append("\t\tif(state not in accept_states):\n");
+            output.append("\t\t\tprint(state + ' is not an accepted state. Reverting back to previous state (We can have the FSM stop running here if needed)')\n");
+            output.append("\t\t\tstate = state_history[-1][0]\n");
+            output.append("\t\t\tch = state_history[-1][1]\n");
+            output.append("\t\t\treturn\n");
             output.append("\t\t" + node[3] + "()\n");
 
         return output.toString();
@@ -81,11 +84,6 @@ public class CodeParser {
         output.append("\tprint('Input File is empty')\n");
         output.append("while(ch):\n");
         output.append("\tUpdateState()\n");
-
-        output.append("\tif(state not in accept_states):\n");
-        output.append("\t\tprint(state + ' is not an accepted state. Reverting back to previous state (We can have the FSM stop running here if needed)')\n");
-        output.append("\t\tstate = state_history[-1][0]\n");
-        output.append("\t\tch = state_history[-1][1]\n");
         output.append("\tstate_history.append([state , ch])\n");
         output.append("\ttry:\n");
         output.append("\t\tch = input()\n");
