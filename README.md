@@ -1,8 +1,14 @@
+##If you are in capstone and are working on this project, email me at "justinbutler4@hotmail.com" with your email so I can add you as a collaborator to the repository. Also feel free to email me if you have any issues or questions regarding the project.
+
 ### Requirements
 * [Java 8+ jdk](https://www.oracle.com/technetwork/java/javaee/downloads/jdk8-downloads-2133151.html)
 * [Python 3](https://www.python.org/download/releases/3.0/)
 * [IntelliJ](https://www.jetbrains.com/idea/) - This project was built while using IntelliJ so all installation and project setup assumes you are also using it. You may have a bad time if you don't.
 * [Java FX Scene Builder](https://www.oracle.com/technetwork/java/javase/downloads/javafxscenebuilder-info-2157684.html)
+* [Chocolate (windows only)](https://chocolatey.org/)
+
+### Installation
+1. 
 
 ### Building
 To Build the jar you go to Build->Build Artifacts. This will create the jar file in the out directory.
