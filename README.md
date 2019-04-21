@@ -18,7 +18,8 @@ To Build the executable jar file either run the maven build or in your terminal 
 ![mavenbuild](docs/images/mavenbuild.png)
 ### Running 
 
-To run the jar file by passing in a file you run `java -jar jarname.jar fsmname.fsm outputfilename.py`
+To run the jar file by passing in a file you run `java -jar jarname.jar fsmname.fsm outputfilename.py` or you can double click the executable jar file.
+The jar file will be located under the "target" directory.
 
 There is a sample fsm file in the fsm-files directory.
 Currently only python is supported as an output file-type so make sure to pass in a .py file as the second argument.
