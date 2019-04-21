@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="fink-machine:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/fink_machine_jar</output-path>
-    <root id="archive" name="fink-machine.jar">
-      <element id="module-output" name="fink-machine" />
-    </root>
-  </artifact>
-</component>

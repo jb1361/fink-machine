@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="fink-machine" target="8" />
+      <module name="fink-machine" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
