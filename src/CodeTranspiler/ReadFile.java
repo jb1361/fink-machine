@@ -1,4 +1,4 @@
-package CodeGenerator;
+package CodeTranspiler;
 
 import java.io.*;
 import java.util.ArrayList;
