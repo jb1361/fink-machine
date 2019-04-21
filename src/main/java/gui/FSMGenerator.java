@@ -134,9 +134,7 @@ public final class FSMGenerator {
         sb.append("TRANS").append(newLine);
 
         ArrayList<String> linkNodes = linkStore.printNodes();
-        linkNodes.forEach(s -> {
-            sb.append(s);
-        });
+        linkNodes.forEach(sb::append);
 
         return sb;
     }

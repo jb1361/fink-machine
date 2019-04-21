@@ -36,7 +36,7 @@ public class FSMParser {
                 String states = String.join("','", accept_states);
                 output.append("accept_states = ['").append(states).append("']\n");
             }
-            else if (!element.equals("trans")) {
+            else if (!element.equals("TRANS")) {
                 String[] node = element.split(" ");
                 output.append(CreateTransitionCode(node, transitionNode));
                 transitionNode++;

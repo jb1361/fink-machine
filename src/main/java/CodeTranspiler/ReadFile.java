@@ -30,6 +30,7 @@ class ReadFile {
         String line;
         try {
             while ((line = br.readLine()) != null) {
+                line = line.replace("\t", "");
                 if (line.equals("CODE")) {
                     ReadCodeSection(br);
                     return;
