@@ -1,4 +1,4 @@
-##If you are in capstone and are working on this project, email me at "justinbutler4@hotmail.com" with your email so I can add you as a collaborator to the repository. Also feel free to email me if you have any issues or questions regarding the project.
+##If you are in capstone and are working on this project, email me from your IUS email at "justinbutler4@hotmail.com" with github usernames or emails so I can add you as a collaborator to the repository. Also feel free to email me if you have any issues or questions regarding the project. Read the first page of the UserManual for more information. 
 
 ### Requirements
 * [Java 8+ jdk](https://www.oracle.com/technetwork/java/javaee/downloads/jdk8-downloads-2133151.html)
@@ -8,7 +8,10 @@
 * [Chocolate (windows only)](https://chocolatey.org/)
 
 ### Installation
-1. 
+1. Make sure all the requirements are installed.
+2. Clone the repository `https://github.com/jb1361/fink-machine.git`
+3. Install maven `choco install maven -y` If you are not on windows, you can follow mavens setup instructions from [here](http://maven.apache.org/index.html).
+
 
 ### Building
 To Build the jar you go to Build->Build Artifacts. This will create the jar file in the out directory.
