@@ -14,8 +14,8 @@
 
 
 ### Building
-To Build the jar you go to Build->Build Artifacts. This will create the jar file in the out directory.
-
+To Build the executable jar file either run the maven build or in your terminal run `mvn package`
+![mavenbuild](docs/images/mavenbuild.png)
 ### Running 
 
 To run the jar file by passing in a file you run `java -jar jarname.jar fsmname.fsm outputfilename.py`
