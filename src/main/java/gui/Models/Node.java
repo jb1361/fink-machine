@@ -2,11 +2,7 @@ package gui.Models;
 
 import gui.CanvasPane;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Ellipse;
-import javacalculus.core.CALC;
-import javafx.geometry.Bounds;
 import javafx.scene.shape.Circle;
 
 public class Node {
@@ -79,10 +75,9 @@ public class Node {
     // Requires a radius be provided from calling function
     /**
      * 
-     * @param x - Reference point 
-     * @param y - Reference point
-     * @param nA - isAcceptState
-     * @param ref - Reference midpoint
+     * @param mid - Anchor point
+     * @param center - Anchor point
+     * @param isAcceptState - isAcceptState
      * @return new Anchor point
      */
     public Anchor findClosestAnchor(Anchor mid, Anchor center, boolean isAcceptState) {

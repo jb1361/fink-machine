@@ -1,5 +1,5 @@
 import CodeTranspiler.CodeParser;
-//import gui.CreateGUI;
+import gui.Loader;
 
 public class Start {
 
@@ -8,7 +8,7 @@ public class Start {
             CodeParser fsm = new CodeParser(args);
         } else {
             // We do not create and object here as JavaFX launch method creates the objects.
-            //CreateGUI.Create(args);
+            Loader.main(args);
         }
     }
 }
