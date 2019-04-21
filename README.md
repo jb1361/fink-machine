@@ -1,5 +1,5 @@
 ### Requirements
-* [Java 8+ sdk](https://www.oracle.com/technetwork/java/javaee/downloads/jdk8-downloads-2133151.html)
+* [Java 8+ jdk](https://www.oracle.com/technetwork/java/javaee/downloads/jdk8-downloads-2133151.html)
 * [Python 3](https://www.python.org/download/releases/3.0/)
 * [IntelliJ](https://www.jetbrains.com/idea/) - This project was built while using IntelliJ so all installation and project setup assumes you are also using it. You may have a bad time if you don't.
 * [Java FX Scene Builder](https://www.oracle.com/technetwork/java/javase/downloads/javafxscenebuilder-info-2157684.html)
