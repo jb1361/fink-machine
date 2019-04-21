@@ -3,12 +3,12 @@ package CodeTranspiler;
 import java.util.Arrays;
 import java.util.List;
 
-public class CodeParser {
+public class FSMParser {
 
     private List<String> FsmSectionList;
     private List<String> CodeSectionList;
 
-    public CodeParser(String[] args) {
+    public FSMParser(String[] args) {
         ReadFile fReader = new ReadFile(args[0]);
         System.out.println("Parsing FSM");
         FsmSectionList = fReader.FsmSectionList;
@@ -28,13 +28,13 @@ public class CodeParser {
         for (String element : FsmSectionList) {
             if(element.contains("FSM")) {
                 String[] header = element.split(" ");
-                output.append("print('Running Module: " + header[1] + "')\n");
+                output.append("print('Running Module: ").append(header[1]).append("')\n");
             }
             else if (element.contains("accept")) {
                 String[] accept_states = element.split(" ");
                 accept_states = Arrays.copyOfRange(accept_states, 1, accept_states.length);
                 String states = String.join("','", accept_states);
-                output.append("accept_states = ['" + states + "']\n");
+                output.append("accept_states = ['").append(states).append("']\n");
             }
             else if (!element.equals("trans")) {
                 String[] node = element.split(" ");
@@ -48,63 +48,55 @@ public class CodeParser {
         return output.toString();
     }
     private String CreateFsmCodeSetup(String startNode) {
-        StringBuilder output = new StringBuilder();
-        output.append("state_history = []\n");
-        output.append("state ='" + startNode + "'\n");
-        output.append("ch = ''\n");
-
-        // Validate the state is an accepted state and revert back if not
-        output.append("def ValidateState():\n");
-        output.append("\tglobal state\n" + "\tglobal ch\n");
-        output.append("\tif(state not in accept_states):\n");
-        output.append("\t\tprint(state + ' is not an accepted state. Reverting back to previous state (We can have the FSM stop running here if needed)')\n");
-        output.append("\t\tstate = state_history[-1][0]\n");
-        output.append("\t\tch = state_history[-1][1]\n");
-        output.append("\t\treturn False\n");
-        output.append("\telse:\n");
-        output.append("\t\treturn True\n");
-
-
-        output.append("def UpdateState():\n");
-        output.append("\tglobal state\n" + "\tglobal ch\n");
-        return output.toString();
+        return "state_history = []\n" +
+                "state ='" + startNode + "'\n" +
+                "ch = ''\n" +
+                "def ValidateState():\n" +
+                "\tglobal state\n" + "\tglobal ch\n" +
+                "\tif(state not in accept_states):\n" +
+                "\t\tprint(state + ' is not an accepted state. Reverting back to previous state (We can have the FSM stop running here if needed)')\n" +
+                "\t\tstate = state_history[-1][0]\n" +
+                "\t\tch = state_history[-1][1]\n" +
+                "\t\treturn False\n" +
+                "\telse:\n" +
+                "\t\treturn True\n" +
+                "def UpdateState():\n" +
+                "\tglobal state\n" + "\tglobal ch\n";
     }
     private String CreateTransitionCode(String[] node, int count) {
         StringBuilder output = new StringBuilder();
         if (count == 0) {
             output.append(CreateFsmCodeSetup(node[0]));
-            output.append("\tif(state == '" + node[0] +"' and ch == " + node[2] + "):\n");
+            output.append("\tif(state == '").append(node[0]).append("' and ch == ").append(node[2]).append("):\n");
         } else {
-            output.append("\telif(state == '" + node[0] +"' and ch == " + node[2] + "):\n");
+            output.append("\telif(state == '").append(node[0]).append("' and ch == ").append(node[2]).append("):\n");
         }
-            output.append("\t\tstate = '" + node[1] + "'\n");
-            output.append("\t\tprint('Transitioning to state " + node[1] + " from state " + node[0] + " with ch = ' + ch)\n");
+            output.append("\t\tstate = '").append(node[1]).append("'\n");
+            output.append("\t\tprint('Transitioning to state ").append(node[1]).append(" from state ").append(node[0]).append(" with ch = ' + ch)\n");
             output.append("\t\tif(not ValidateState()):\n");
             output.append("\t\t\treturn\n");
-            output.append("\t\t" + node[3] + "()\n");
+            output.append("\t\t").append(node[3]).append("()\n");
 
         return output.toString();
     }
     private String CreateStandardInputSection() {
-        StringBuilder output = new StringBuilder();
-        output.append("print('Waiting for input...')\n");
-        output.append("try:\n");
-        output.append("\tch = input()\n");
-        output.append("except:\n");
-        output.append("\tprint('Input File is empty')\n");
-        output.append("while(ch):\n");
-        output.append("\tUpdateState()\n");
-        output.append("\tstate_history.append([state , ch])\n");
-        output.append("\ttry:\n");
-        output.append("\t\tch = input()\n");
-        output.append("\texcept:\n");
-        output.append("\t\tbreak\n");
-        output.append("print('Ending State: ' + state)\n");
-        output.append("print('')\n");
-        output.append("print('State History')\n");
-        output.append("print(state_history)\n");
-        output.append("print('FSM finished, exiting...')\n");
-        return output.toString();
+        return "print('Waiting for input...')\n" +
+                "try:\n" +
+                "\tch = input()\n" +
+                "except:\n" +
+                "\tprint('Input File is empty')\n" +
+                "while(ch):\n" +
+                "\tUpdateState()\n" +
+                "\tstate_history.append([state , ch])\n" +
+                "\ttry:\n" +
+                "\t\tch = input()\n" +
+                "\texcept:\n" +
+                "\t\tbreak\n" +
+                "print('Ending State: ' + state)\n" +
+                "print('')\n" +
+                "print('State History')\n" +
+                "print(state_history)\n" +
+                "print('FSM finished, exiting...')\n";
     }
     private String ParseCodeSection() {
         StringBuilder output = new StringBuilder();
