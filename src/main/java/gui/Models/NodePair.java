@@ -1,11 +1,11 @@
-
 package gui.Models;
+
 // NodePairs are ordered
 // A,B is different from B,A
 public class NodePair {
     String startNode;
     String endNode;
-    
+
     public NodePair(String a, String b) {
         this.startNode = a;
         this.endNode = b;
@@ -26,29 +26,33 @@ public class NodePair {
     public void setEndNode(String endNode) {
         this.endNode = endNode;
     }
-    
-    public String getValue() { return "('" + startNode + "', '" + endNode + "')"; }
-    
-    
-    
+
+    public String getValue() {
+        return "('" + startNode + "', '" + endNode + "')";
+    }
+
+
     @Override
     public boolean equals(Object args0) {
-       if(args0 == this) { return true; }
-       if(!(args0 instanceof NodePair)) { return false; }
-       boolean pass = false;
-       NodePair test = (NodePair) args0;
-       if (test.startNode.equals(this.startNode) &&
-           test.endNode.equals(this.endNode))
-           pass = true;
+        if (args0 == this) {
+            return true;
+        }
+        if (!(args0 instanceof NodePair)) {
+            return false;
+        }
+        boolean pass = false;
+        NodePair test = (NodePair) args0;
+        if (test.startNode.equals(this.startNode) &&
+                test.endNode.equals(this.endNode))
+            pass = true;
 
-       return pass;
+        return pass;
     }
-    
+
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return getValue().hashCode();
     }
-    
+
 
 }

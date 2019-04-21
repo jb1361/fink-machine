@@ -16,7 +16,7 @@ public class FSMControls {
     CanvasPane cp;
     Settings settings;
     Stage rootStage;
-    
+
     public FSMControls(Stage rootStage,
                        NodeStore nodeStore,
                        LinkStore linkStore,
@@ -26,8 +26,10 @@ public class FSMControls {
         this.settings = settings;
         this.rootStage = rootStage;
     }
-    
-    public void setCanvasPane(CanvasPane cp) { this.cp = cp; }
+
+    public void setCanvasPane(CanvasPane cp) {
+        this.cp = cp;
+    }
 
     // ---------- STATES ------------ //
     // Create new state, add to list, and display in default location
@@ -40,16 +42,16 @@ public class FSMControls {
         // Draw to canvas
         cp.drawState(newNode.getPane());
     }
-    
-    
+
+
     // ---------- LINKS ------------ //
     public void resetLink(Link link) {
         // Remove link record
         this.linkStore.removeLink(link);
         // Create new link
         linkGenerator(link.getStart(), link.getEnd(), link.getText());
-    }  
-    
+    }
+
     public void linkGenerator(Node startNode, Node endNode, String text) {
         Anchor centerA = generateLinkMidPoint(startNode);
         Anchor centerB = generateLinkMidPoint(endNode);
@@ -63,14 +65,19 @@ public class FSMControls {
         // Add to LinkStore
         linkStore.addLink(new NodePair(startNode.getText(), endNode.getText()), link);
     }
-    
+
     public Anchor generateLinkMidPoint(Node node) {
         return new Anchor((node.getPane().getWidth() / 2) + node.getAnchor().getX(),
-                          (node.getPane().getHeight() / 2) + node.getAnchor().getY());
+                (node.getPane().getHeight() / 2) + node.getAnchor().getY());
     }
-    
-    public void generateLink(Node a, Node b) { generateLink(a, b, ""); }
-    public void generateLink(Node a, Node b, String s) { }
+
+    public void generateLink(Node a, Node b) {
+        generateLink(a, b, "");
+    }
+
+    public void generateLink(Node a, Node b, String s) {
+    }
+
     public Link generateLink(Node a, Node b, String text, Anchor start, Anchor end) {
         // Create new pre-populated link
         Link tempLink = new Link(a, b, text);
@@ -85,16 +92,18 @@ public class FSMControls {
         // Save connecting points
         tempLink.setStartAnchor(linkStart);
         tempLink.setEndAnchor(linkEnd);
-        
+
         return tempLink;
     }
-    
+
     public Path generateLinkPath(Link sourceLink) {
         Path linkPath = this.cp.buildLinkPath(sourceLink.getStartAnchor(), sourceLink.getEndAnchor(), sourceLink.getText());
         sourceLink.setLine(linkPath);
         return linkPath;
     }
-    
-    public void out(String text) { System.out.println(text); }
-    
+
+    public void out(String text) {
+        System.out.println(text);
+    }
+
 }

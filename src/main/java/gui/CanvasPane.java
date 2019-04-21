@@ -5,7 +5,9 @@ import gui.Models.Link;
 import gui.Models.LinkStore;
 import gui.Models.NodeStore;
 import gui.Models.Settings;
+
 import java.util.ArrayList;
+
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -23,10 +25,10 @@ import javafx.scene.text.Text;
 
 /**
  * TODO
- *** Allow drag of links (Change anchors)
- *** Allow link arc
- *** Context Menu functions
- *** Redraw links after node movement
+ * ** Allow drag of links (Change anchors)
+ * ** Allow link arc
+ * ** Context Menu functions
+ * ** Redraw links after node movement
  */
 
 /***
@@ -47,24 +49,24 @@ public class CanvasPane extends Pane {
     MenuController menu;
     //gui.Models.Node activeNode;
     //ArrayList<Threads> threads;
-  
 
-    CanvasPane( NodeStore nodeStore,
-                LinkStore linkStore,
-                Settings settings) {
+
+    CanvasPane(NodeStore nodeStore,
+               LinkStore linkStore,
+               Settings settings) {
         // Gather shared data
         this.nodeStore = nodeStore;
         this.linkStore = linkStore;
         this.settings = settings;
-        
+
         this.canvas = new Canvas();
         this.gc = canvas.getGraphicsContext2D();
-        
+
         // Redraw canvas when container is resized
         //canvas.widthProperty().addListener(e -> draw(canvas));
         //canvas.heightProperty().addListener(e -> draw(canvas));
     }
-    
+
     public void initCanvas() {
         canvas.setId("canvas");
         this.getChildren().add(canvas);
@@ -73,30 +75,39 @@ public class CanvasPane extends Pane {
         canvas.heightProperty().bind(this.heightProperty());
         menu.createCanvasContextMenu(this.canvas);
     }
-    
-    public void setMenu(MenuController menu) { this.menu = menu; }
-    public GraphicsContext getGC() { return this.canvas.getGraphicsContext2D(); }
-    public void drawState(StackPane sp) { this.getChildren().add(sp); }
-    
+
+    public void setMenu(MenuController menu) {
+        this.menu = menu;
+    }
+
+    public GraphicsContext getGC() {
+        return this.canvas.getGraphicsContext2D();
+    }
+
+    public void drawState(StackPane sp) {
+        this.getChildren().add(sp);
+    }
+
     public Anchor getDefaultStateCoordinate(gui.Models.Node node) {
         double r = settings.getNodeRadius();
         double x = (canvas.getWidth() / 2) - r;
         double y = (canvas.getHeight() / 2) - r;
         return new Anchor(x, y);
     }
+
     public Anchor getDefaultStateCoordinate(StackPane sp, boolean accept) {
         double r = settings.getNodeRadius();
         double x = (canvas.getWidth() / 2) - r;
         double y = (canvas.getHeight() / 2) - r;
         return new Anchor(x, y);
     }
-    
+
     public StackPane generateNewNodePane(gui.Models.Node node) {
-        
-        StackPane sp = node.getPane(); 
+
+        StackPane sp = node.getPane();
         Anchor anchor = node.getAnchor();
         boolean isAcceptState = node.getAccept();
-        
+
         Text text = new Text(node.getText());
         Circle state = createCircle(anchor.getX(), anchor.getY(), this.settings.getNodeRadius(), false);
         sp.getChildren().addAll(state, text);
@@ -109,23 +120,25 @@ public class CanvasPane extends Pane {
         }
         // Set state's position on canvas
         sp.setLayoutX(anchor.getX());
-        sp.setLayoutY(anchor.getY());        
+        sp.setLayoutY(anchor.getY());
         // Set a few handlers before the pane is drawn
         setStandardEvents(sp);
         // Generate a context menu for each unique node
         menu.createContextMenu(sp);
-        
+
         return sp;
     }
-    
-    public void drawDot(double x, double y) { gc.fillOval(x, y, 3, 3); }
-    
+
+    public void drawDot(double x, double y) {
+        gc.fillOval(x, y, 3, 3);
+    }
+
     public Path buildLinkPath(Anchor startPoint, Anchor endPoint, String text) {
         // Calculate angles
         double endAngle = Math.atan2(endPoint.getY() - startPoint.getY(), endPoint.getX() - startPoint.getX());
         double dx = Math.cos(endAngle);
         double dy = Math.sin(endAngle);
-        
+
         Path path = new Path();
         ObservableList e = path.getElements();
         // Draw line
@@ -134,13 +147,13 @@ public class CanvasPane extends Pane {
         e.add(new MoveTo(endPoint.getX(), endPoint.getY()));
         // Draw arrow tip
         e.add(new LineTo(endPoint.getX() - 8 * dx + 5 * dy,
-                         endPoint.getY() - 8 * dy - 5 * dx));
+                endPoint.getY() - 8 * dy - 5 * dx));
         e.add(new MoveTo(endPoint.getX(), endPoint.getY()));
         e.add(new LineTo(endPoint.getX() - 8 * dx - 5 * dy,
-                         endPoint.getY() - 8 * dy + 5 * dx));
+                endPoint.getY() - 8 * dy + 5 * dx));
         return path;
     }
-    
+
     // TODO Draw links with arcs
     /*
     public void drawLink(Anchor arcStart, Anchor arcEnd, Circle circle, double scale, double startAngle, double endAngle, String text) {
@@ -159,7 +172,7 @@ public class CanvasPane extends Pane {
         
     }
     */
-    
+
     // TODO Draw link text near line
     /*
     public void drawLinkText(Anchor textAnchor, String text, double textAngle) {
@@ -179,15 +192,15 @@ public class CanvasPane extends Pane {
         // Draw text
         gc.fillText(text, textAnchor.x, textAnchor.y + 5);
         
-    } */   
-    
+    } */
+
     private void handleNodeDrag(StackPane sp, double endX, double endY) {
         // Find which node object was moved
         String activeNodeText = ((Text) sp.getChildren().get(1)).getText();
         // Convert event movement into local coordinates
         Point2D localCoordinates = canvas.screenToLocal(endX, endY);
         double newX = localCoordinates.getX() - (sp.getWidth() / 2);
-        double newY = localCoordinates.getY() - (sp.getHeight() / 4);  
+        double newY = localCoordinates.getY() - (sp.getHeight() / 4);
         // Save the new coordinates
         gui.Models.Node activeNode = nodeStore.findNodeFromText(activeNodeText);
         // Move state node
@@ -196,11 +209,13 @@ public class CanvasPane extends Pane {
         // Find all attached links
         ArrayList<Link> links = linkStore.trackNode(activeNode);
         // Hide links until node is settled
-        links.forEach(l -> { this.getChildren().remove(this.getChildren().get(l.getIndex())); }); 
-    } 
-    
+        links.forEach(l -> {
+            this.getChildren().remove(this.getChildren().get(l.getIndex()));
+        });
+    }
+
     /**
-     * 
+     *
      * @param x : node center X
      * @param y : node center Y
      * @param r : node radius
@@ -215,9 +230,9 @@ public class CanvasPane extends Pane {
         newState.setFill(Color.rgb(0, 0, 0, 0));
         return newState;
     }
-    
+
     private void setStandardEvents(StackPane sp) {
-        sp.setOnDragDetected( (MouseEvent m) -> {
+        sp.setOnDragDetected((MouseEvent m) -> {
             sp.startFullDrag();
             // Prepare links for node movement
             /// Find which node object was moved
@@ -226,19 +241,19 @@ public class CanvasPane extends Pane {
             ArrayList<Link> links = linkStore.trackNode(this.nodeStore.findNodeFromText(activeNodeText));
             /// Hide links until node is settled
             //****** THIS NEEDS RE-THOUGHT *******/
-            links.forEach(l -> { this.getChildren().remove(this.getChildren().get(l.getIndex())); });
+            links.forEach(l -> {
+                this.getChildren().remove(this.getChildren().get(l.getIndex()));
+            });
         });
-        
-        sp.setOnMouseDragged(new EventHandler <MouseEvent>()
-        {
-            public void handle(MouseEvent event)
-            {
+
+        sp.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
                 handleNodeDrag(sp, event.getSceneX(), event.getSceneY());
                 event.consume();
             }
         });
-        
-        sp.setOnMouseReleased( (MouseEvent e) -> {
+
+        sp.setOnMouseReleased((MouseEvent e) -> {
             // Find which node object was moved
             String activeText = ((Text) sp.getChildren().get(1)).getText();
             // Save the new coordinates
@@ -253,7 +268,9 @@ public class CanvasPane extends Pane {
             });
         });
     }
-    
-    public void setRootControls(FSMControls rootControls) { this.rootControls = rootControls; }
-    
+
+    public void setRootControls(FSMControls rootControls) {
+        this.rootControls = rootControls;
+    }
+
 }

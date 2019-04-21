@@ -56,7 +56,7 @@ public class MenuController {
     // Generate .fsm file
     public void generateFSM(String type) {
         System.out.println("Launching FSM Generator");
-        CodeGenerator cg = new CodeGenerator(rootStage, rootControls, linkStore, nodeStore, settings); 
+        FSMGenerator cg = new FSMGenerator(rootStage, rootControls, linkStore, nodeStore, settings);
         cg.beginProcessing(type);
     }
     

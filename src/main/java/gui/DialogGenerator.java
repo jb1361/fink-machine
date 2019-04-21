@@ -5,9 +5,13 @@ import gui.Models.LinkStore;
 import gui.Models.Node;
 import gui.Models.NodeStore;
 import gui.Models.Settings;
+
 import java.util.ArrayList;
+
 import static java.util.Objects.isNull;
+
 import java.util.Optional;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -29,15 +33,15 @@ import javafx.scene.text.Text;
 import javafx.util.Pair;
 
 public class DialogGenerator {
-    
+
     final Settings settings;
     NodeStore nodeStore;
     LinkStore linkStore;
     FSMControls rootControls;
     MenuController menu;
-    
-    public DialogGenerator( 
-            FSMControls rootControls, 
+
+    public DialogGenerator(
+            FSMControls rootControls,
             NodeStore nodeStore,
             LinkStore linkStore,
             Settings settings,
@@ -50,16 +54,21 @@ public class DialogGenerator {
     }
 
     // STATE BUILDER helper functions
-    public void createNewState(boolean i) { stateBuilder(i, null); }
-    public void modifyState(StackPane sp) { stateBuilder(false, sp); }
-    
+    public void createNewState(boolean i) {
+        stateBuilder(i, null);
+    }
+
+    public void modifyState(StackPane sp) {
+        stateBuilder(false, sp);
+    }
+
     // 
     public void stateBuilder(boolean i, StackPane rootPane) {
         // Prepare a fresh node in case this is a new state
         gui.Models.Node activeNode = new gui.Models.Node();
         // If a state was given, find its node
         if (!isNull(rootPane))
-            activeNode = nodeStore.findNodeFromText(((Text)rootPane.getChildren().get(1)).getText());
+            activeNode = nodeStore.findNodeFromText(((Text) rootPane.getChildren().get(1)).getText());
 
         Dialog<gui.Models.Node> dialog = new Dialog<>();
         dialog.setTitle("State Builder");
@@ -80,12 +89,12 @@ public class DialogGenerator {
         TextField text = new TextField();
         text.setText(activeNode.getText());
         text.requestFocus();
-        
+
         ComboBox<String> acceptState = new ComboBox<>();
         acceptState.getItems().addAll("No", "Yes");
-        
+
         // Check if a selection has been made (modify)
-        if (activeNode.getAccept() || i == true) 
+        if (activeNode.getAccept() || i == true)
             acceptState.setValue("Yes");
         else
             acceptState.setValue("No");
@@ -95,7 +104,7 @@ public class DialogGenerator {
         grid.add(new Label("Accept State?"), 0, 1);
         grid.add(acceptState, 1, 1);
         dialog.getDialogPane().setContent(grid);
-        
+
         // Set focus on text
         Platform.runLater(() -> text.requestFocus());
 
@@ -109,24 +118,24 @@ public class DialogGenerator {
             }
             return null;
         });
-        
+
         submitButton.addEventFilter(
-            ActionEvent.ACTION, 
-            event -> {
-                if (text.getText().isEmpty() || !nodeStore.nodeExists(text.getText())) {
-                    errorAlert("Invalid state name", "State name must be unique.");
-                    event.consume();
+                ActionEvent.ACTION,
+                event -> {
+                    if (text.getText().isEmpty() || !nodeStore.nodeExists(text.getText())) {
+                        errorAlert("Invalid state name", "State name must be unique.");
+                        event.consume();
+                    }
                 }
-            }
         );
-        
+
         final Optional<gui.Models.Node> result = dialog.showAndWait();
-        
+
         if (result.isPresent())
             this.rootControls.createState(((gui.Models.Node) result.get()).getText(), ((gui.Models.Node) result.get()).getAccept());
-            
+
     }
-    
+
     // Create a new link
     public void createNewLink() {
         ArrayList<String> existingNodes = this.nodeStore.getNodes();
@@ -152,7 +161,7 @@ public class DialogGenerator {
 
         TextField text = new TextField();
         text.setPromptText("Text");
-        
+
         ComboBox<String> linkStart = new ComboBox<>();
         ComboBox<String> linkEnd = new ComboBox<>();
         // Populate links
@@ -175,43 +184,43 @@ public class DialogGenerator {
         // Convert the result to the desired data structure
         dialog.setResultConverter(buttonType -> {
             if (buttonType == submitButtonType) {
-                
+
                 // Locate the associated node
                 Node startNode = nodeStore.findNodeFromText(linkStart.getValue());
                 Node endNode = nodeStore.findNodeFromText(linkEnd.getValue());
-                
+
                 Link link = new Link();
                 link.setStart(startNode);
                 link.setEnd(endNode);
                 link.setText(text.getText());
-                
+
                 return link;
-                
+
             }
             return null;
         });
-        
+
         submitButton.addEventFilter(
-            ActionEvent.ACTION, 
-            event -> {
-                if (text.getText().isEmpty() || !linkStore.linkExists(linkStart.getValue(), linkEnd.getValue())) {
-                    errorAlert("Invalid link", "This link already exists.");
-                    event.consume();
+                ActionEvent.ACTION,
+                event -> {
+                    if (text.getText().isEmpty() || !linkStore.linkExists(linkStart.getValue(), linkEnd.getValue())) {
+                        errorAlert("Invalid link", "This link already exists.");
+                        event.consume();
+                    }
                 }
-            }
         );
-        
+
         final Optional<Link> result = dialog.showAndWait();
-        
+
         if (result.isPresent()) {
             Node startNode = nodeStore.findNodeFromText(linkStart.getValue());
             Node endNode = nodeStore.findNodeFromText(linkEnd.getValue());
-            
+
             this.rootControls.linkGenerator(startNode, endNode, text.getText());
         }
-            
+
     }
-    
+
     // TODO Create new functions
     /*
     // Create a new function
@@ -295,95 +304,99 @@ public class DialogGenerator {
             
     }
     */
-    
+
     /******** MODIFICATION DIALOGS ********/
-    
+
     // Modify an existing state
     public void modifyStates(StackPane rootPane) {
         // Obtain existing state data
-        gui.Models.Node activeNode = nodeStore.findNodeFromText(((Text)rootPane.getChildren().get(1)).toString());
-        
+        gui.Models.Node activeNode = nodeStore.findNodeFromText(((Text) rootPane.getChildren().get(1)).toString());
+
         TextInputDialog dialog = new TextInputDialog();
- 
+
         dialog.setTitle("Modify existing state");
         dialog.setContentText("State name:");
-        
+
         final Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         final TextField inputField = dialog.getEditor();
-        
+
         inputField.setText(activeNode.getText());
-        
+
         okButton.addEventFilter(
-            ActionEvent.ACTION, 
-            event -> {
-                if (inputField.getText().isEmpty() || !nodeStore.nodeExists(inputField.getText())) {
-                    errorAlert("Invalid state name", "State name must be unique.");
-                    event.consume();
+                ActionEvent.ACTION,
+                event -> {
+                    if (inputField.getText().isEmpty() || !nodeStore.nodeExists(inputField.getText())) {
+                        errorAlert("Invalid state name", "State name must be unique.");
+                        event.consume();
+                    }
                 }
-            }
         );
         final Optional<String> result = dialog.showAndWait();
-        
+
         if (result.isPresent())
             this.rootControls.createState(result.get(), false);
     }
-    
-    /** MENU DIALOGS **/
-    
+
+    /**
+     * MENU DIALOGS
+     **/
+
     public void exportCode() {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         ButtonType submitButtonType = new ButtonType("Submit", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(submitButtonType, ButtonType.CANCEL);
         Button confirm = (Button) dialog.getDialogPane().lookupButton(submitButtonType);
-                
+
         dialog.setTitle("Export Code");
-        
+
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
-        
+
         ComboBox<String> language = new ComboBox<>();
         // Populate links
         language.getItems().add("Python");
         // Default value
         language.setValue(language.getItems().get(0));
-        
+
         final ToggleGroup type = new ToggleGroup();
         RadioButton sourceOnly = new RadioButton("Source code only");
-            sourceOnly.setToggleGroup(type);
-            sourceOnly.setSelected(true);
+        sourceOnly.setToggleGroup(type);
+        sourceOnly.setSelected(true);
         RadioButton rawOnly = new RadioButton("Raw FSM code only");
-            rawOnly.setToggleGroup(type);
+        rawOnly.setToggleGroup(type);
         RadioButton both = new RadioButton("Source and FSM code");
-            both.setToggleGroup(type);
-        
+        both.setToggleGroup(type);
+
         grid.add(new Label("Language:"), 0, 0);
         grid.add(language, 1, 0);
         grid.add(new Label("Export type:"), 0, 1);
         grid.add(sourceOnly, 0, 2);
         grid.add(rawOnly, 1, 2);
         grid.add(both, 2, 2);
-        
+
         dialog.getDialogPane().setContent(grid);
         // Set focus on text input
         Platform.runLater(() -> confirm.requestFocus());
-        
+
         // Convert the result to the desired data structure
         dialog.setResultConverter(buttonType -> {
             if (buttonType == submitButtonType) {
-                return ( new Pair<>(language.getValue(), 
-                                    String.valueOf(type.getToggles().indexOf(type.getSelectedToggle()))) );
-                
+                return (new Pair<>(language.getValue(),
+                        String.valueOf(type.getToggles().indexOf(type.getSelectedToggle()))));
+
             }
             return null;
         });
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
-        result.ifPresent(options -> menu.generateFSM("Python"));           
+        result.ifPresent(options -> menu.generateFSM("Python"));
     }
-    
-    /** ERROR NOTICE **/
+
+    /**
+     * ERROR NOTICE
+     **/
     public void errorAlert(String type, String error) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("ERROR");
@@ -392,5 +405,5 @@ public class DialogGenerator {
         alert.setResizable(false);
         alert.showAndWait();
     }
-    
+
 }

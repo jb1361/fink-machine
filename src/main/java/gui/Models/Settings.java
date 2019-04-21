@@ -12,7 +12,7 @@ public class Settings {
     Paint linkColor;
     Paint selfLinkColor;
     Paint textColor;
-    
+
     public Settings() {
         // Default settings
         nodeRadius = 30;
@@ -97,6 +97,6 @@ public class Settings {
     public void setTextColor(Paint textColor) {
         this.textColor = textColor;
     }
-    
-    
+
+
 }

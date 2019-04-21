@@ -1,31 +1,45 @@
 package gui.Models;
 
 import gui.CanvasPane;
-import java.util.ArrayList;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
+
 public class Node {
-    
+
     class Attempt {
         Anchor point;
         double cost;
+
         public Attempt(Anchor point, double cost) {
             this.point = point;
             this.cost = cost;
         }
-        public Anchor getPt() { return this.point; }
-        public double getCost() { return this.cost; }
-        public void setPt(Anchor a) { this.point = a; }
-        public void setCost(double d) { this.cost = d; }
+
+        public Anchor getPt() {
+            return this.point;
+        }
+
+        public double getCost() {
+            return this.cost;
+        }
+
+        public void setPt(Anchor a) {
+            this.point = a;
+        }
+
+        public void setCost(double d) {
+            this.cost = d;
+        }
     }
-    
+
     Anchor anchor;
     boolean isAcceptState;
     String text;
     ArrayList<Function> functions;
     StackPane pane;
-    
+
     public Node() {
         isAcceptState = false;
         text = "";
@@ -33,21 +47,21 @@ public class Node {
         pane = new StackPane();
         functions = new ArrayList<Function>();
     }
-    
+
     public Node(String text, boolean isAcceptState) {
         this.text = text;
         this.anchor = new Anchor();
         this.pane = new StackPane();
         this.isAcceptState = isAcceptState;
     }
-    
+
     public Node(String text, boolean isAcceptState, StackPane pane) {
         this.text = text;
         this.pane = pane;
         this.anchor = new Anchor();
         this.isAcceptState = isAcceptState;
     }
-    
+
     public Node copyNode(Node src, Anchor a) {
         Node temp = new Node();
         temp.setAnchor(a);
@@ -57,26 +71,26 @@ public class Node {
         temp.setPane(src.getPane());
         return temp;
     }
-    
+
     // Should include mouse offsets
     public void setAnchors(double x, double y) {
         this.anchor.x = x;
         this.anchor.y = y;
     }
-    
+
     // Requires a radius be provided from calling function
     public boolean containsPoint(double x, double y, double r) {
         double tempX = x - this.anchor.x;
         double tempY = y - this.anchor.y;
-        
-        return Math.pow(tempX,2) + Math.pow(tempY,2) < (r * r);
+
+        return Math.pow(tempX, 2) + Math.pow(tempY, 2) < (r * r);
     }
-    
+
     // Requires a radius be provided from calling function
+
     /**
-     * 
-     * @param mid - Anchor point
-     * @param center - Anchor point
+     * @param mid           - Anchor point
+     * @param center        - Anchor point
      * @param isAcceptState - isAcceptState
      * @return new Anchor point
      */
@@ -98,16 +112,39 @@ public class Node {
         double pY = center.y + (vY / vM) * r;
         tempAnchor.x = pX;
         tempAnchor.y = pY;
-        
+
         return tempAnchor;
     }
-    
-    public String getText() { return this.text; }
-    public void setText(String text) { this.text = text; }
-    public boolean getAccept() { return this.isAcceptState; }
-    public void setAccept(boolean b) { this.isAcceptState = b; }
-    public Anchor getAnchor() { return this.anchor; }
-    public void setAnchor(Anchor a) { this.anchor = a; }
-    public StackPane getPane() { return this.pane; }
-    public void setPane(StackPane sp) { this.pane = sp; }
+
+    public String getText() {
+        return this.text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public boolean getAccept() {
+        return this.isAcceptState;
+    }
+
+    public void setAccept(boolean b) {
+        this.isAcceptState = b;
+    }
+
+    public Anchor getAnchor() {
+        return this.anchor;
+    }
+
+    public void setAnchor(Anchor a) {
+        this.anchor = a;
+    }
+
+    public StackPane getPane() {
+        return this.pane;
+    }
+
+    public void setPane(StackPane sp) {
+        this.pane = sp;
+    }
 }
