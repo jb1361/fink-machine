@@ -8,6 +8,8 @@
 * [Chocolate (windows only)](https://chocolatey.org/)
 
 ### Installation
+This project currently uses maven as it's build tools. There is currently no packages being used by it but it will be very beneficial once packages are needed.
+
 1. Make sure all the requirements are installed.
 2. Clone the repository `https://github.com/jb1361/fink-machine.git`
 3. Install maven `choco install maven -y` If you are not on windows, you can follow mavens setup instructions from [here](http://maven.apache.org/index.html).
