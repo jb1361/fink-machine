@@ -1,4 +1,4 @@
-##If you are in capstone and are working on this project, email me from your IUS email at "justinbutler4@hotmail.com" with github usernames or emails so I can add you as a collaborator to the repository. Also feel free to email me if you have any issues or questions regarding the project. Read the first page of the UserManual for more information. 
+## If you are in capstone and are working on this project, email me from your IUS email at "justinbutler4@hotmail.com" with github usernames or emails so I can add you as a collaborator to the repository. Also feel free to email me if you have any issues or questions regarding the project. Read the first page of the UserManual for more information. 
 
 ### Requirements
 * [Java 8+ jdk](https://www.oracle.com/technetwork/java/javaee/downloads/jdk8-downloads-2133151.html)
